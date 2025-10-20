@@ -74,6 +74,10 @@ function ChatAppContent() {
     setShowUsernameModal(true);
   };
 
+  const handleAddNewUser = () => {
+    setShowUsernameModal(true);
+  };
+
   // Extraire les noms d'utilisateurs pour la compatibilité avec le composant Sidebar
   const userNames = React.useMemo(() => {
     return users.map(user => user.username);
@@ -126,6 +130,7 @@ function ChatAppContent() {
           username={username}
           messageCount={filteredMessages?.length || 0}
           onUsernameChange={handleUsernameChange}
+          onAddNewUser={handleAddNewUser}
           selectedUser={selectedUser}
           onBackToAll={handleBackToAllMessages}
         />
