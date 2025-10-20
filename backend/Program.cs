@@ -38,7 +38,7 @@ builder.Services.AddCors(options =>
                 "http://localhost:3002", // React dev server (port alternatif)
                 "http://192.168.1.105:3002", // Votre adresse IP locale
                 "http://192.168.1.105:3000", // Votre adresse IP locale (port alternatif)
-                "https://your-app.vercel.app", // Vercel deployment
+                "https://emotional-chat.vercel.app", // Vercel deployment
                 "http://localhost:19006" // React Native web
             )
             .AllowAnyHeader()
