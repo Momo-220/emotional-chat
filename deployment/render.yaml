@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: emotion-chat-api
+    env: dotnet
+    plan: free
+    buildCommand: cd backend && dotnet restore && dotnet publish -c Release -o ./publish
+    startCommand: cd backend/publish && dotnet EmotionChat.API.dll
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        value: postgresql://postgres:password@dpg-xxxxx-a.oregon-postgres.render.com/emotionchat
+      - key: HuggingFaceUrl
+        value: https://api-inference.huggingface.co/models/distilbert-base-uncased-finetuned-sst-2-english
+      - key: HuggingFaceToken
+        value: your-hugging-face-token-here
+
+databases:
+  - name: emotionchat-db
+    plan: free
+    databaseName: emotionchat
+    user: postgres
+
+

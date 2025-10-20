@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # Backend .NET Core
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Host=db;Database=emotionchat;Username=postgres;Password=password
+      - HuggingFaceUrl=https://api-inference.huggingface.co/models/distilbert-base-uncased-finetuned-sst-2-english
+    depends_on:
+      - db
+    networks:
+      - emotion-chat-network
+
+  # Frontend React.js
+  frontend:
+    build:
+      context: ../frontend-web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://backend:5000
+    depends_on:
+      - backend
+    networks:
+      - emotion-chat-network
+
+  # AI Service Python
+  ai-service:
+    build:
+      context: ../ai-service
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - emotion-chat-network
+
+  # Base de données PostgreSQL
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=emotionchat
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - emotion-chat-network
+
+volumes:
+  postgres_data:
+
+networks:
+  emotion-chat-network:
+    driver: bridge
+
+
